@@ -14,13 +14,17 @@
 
 html, body{ height: 100%; }
 
-body{
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: "Epunda Slab", serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='3'%3E%3Crect width='1' height='1' fill='%23cfcfcf'/%3E%3Crect x='1' width='1' height='1' fill='%238a8a8a'/%3E%3Crect x='2' width='1' height='1' fill='%23bdbdbd'/%3E%3Crect y='1' width='1' height='1' fill='%239c9c9c'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23e6e6e6'/%3E%3Crect x='2' y='1' width='1' height='1' fill='%23757575'/%3E%3Crect y='2' width='1' height='1' fill='%23b3b3b3'/%3E%3Crect x='1' y='2' width='1' height='1' fill='%23808080'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23d4d4d4'/%3E%3C/svg%3E");
+
+  background-size: 4px 4px;
+  opacity: 0.35;
+  z-index: 0;
 }
 
 /* continuous analog detuning */
