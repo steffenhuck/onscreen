@@ -2,13 +2,18 @@
 
 :root{
   --bg: #181818;
+
   --title: #f2f2f2;
-  --text: rgba(242,242,242,0.9);
+  --text: rgba(242,242,242,0.90);
   --muted: rgba(242,242,242,0.75);
 
   --maxw: 980px;
   --gutter: clamp(20px, 5vw, 60px);
   --radius: 14px;
+
+  /* Tuning knobs */
+  --snow-opacity: 0.28;   /* try 0.34 for stronger snow */
+  --scan-opacity: 0.18;   /* reduce to 0.10 if too strong */
 }
 
 *{ box-sizing: border-box; }
@@ -22,65 +27,43 @@ body{
   position: relative;
 }
 
-/* ========================= */
-/*   CRT-STYLE STATIC        */
-/* ========================= */
+/* ============================= */
+/*   REAL CRT SNOW (BITMAP)     */
+/* ============================= */
 
 body::before{
-  content: "";
+  content:"";
   position: fixed;
   inset: 0;
   pointer-events: none;
+  background: url("noise.png") repeat;
+  background-size: 256px 256px;
+  opacity: var(--snow-opacity);
   z-index: 0;
-
-  /* multiple fine grain layers */
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,0.12) 0px,
-      rgba(255,255,255,0.12) 1px,
-      rgba(0,0,0,0.12) 1px,
-      rgba(0,0,0,0.12) 2px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(255,255,255,0.08) 0px,
-      rgba(255,255,255,0.08) 1px,
-      rgba(0,0,0,0.08) 1px,
-      rgba(0,0,0,0.08) 3px
-    ),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255,255,255,0.06) 0px,
-      rgba(255,255,255,0.06) 1px,
-      rgba(0,0,0,0.06) 1px,
-      rgba(0,0,0,0.06) 4px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      rgba(255,255,255,0.06) 0px,
-      rgba(255,255,255,0.06) 1px,
-      rgba(0,0,0,0.06) 1px,
-      rgba(0,0,0,0.06) 4px
-    );
-
-  /* THIS controls pixel size */
-  background-size: 2px 2px, 3px 3px, 5px 5px, 5px 5px;
-  background-position: 0 0, 1px 2px, 2px 1px, 3px 4px;
-
-  opacity: 0.35; /* increase to 0.45 for stronger snow */
 }
 
-/* Ensure content sits above static */
+/* Optional scanlines layer */
+body::after{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: url("scanlines.png") repeat;
+  background-size: 8px 4px;
+  opacity: var(--scan-opacity);
+  z-index: 0;
+}
+
+/* Ensure content sits above noise */
 .masthead,
 .container{
   position: relative;
   z-index: 1;
 }
 
-/* ========================= */
-/*   TITLE                   */
-/* ========================= */
+/* ============================= */
+/*   TITLE                      */
+/* ============================= */
 
 .masthead{
   width: min(var(--maxw), calc(100% - (2 * var(--gutter))));
@@ -97,9 +80,9 @@ body::before{
   color: var(--title);
 }
 
-/* ========================= */
-/*   CONTENT                 */
-/* ========================= */
+/* ============================= */
+/*   CONTENT                    */
+/* ============================= */
 
 .container{
   width: min(var(--maxw), calc(100% - (2 * var(--gutter))));
@@ -118,9 +101,9 @@ body::before{
   gap: 16px;
 }
 
-/* ========================= */
-/*   THUMBNAILS              */
-/* ========================= */
+/* ============================= */
+/*   THUMBNAILS                 */
+/* ============================= */
 
 .thumb{
   display: block;
@@ -142,9 +125,9 @@ body::before{
   filter: brightness(1.08);
 }
 
-/* ========================= */
-/*   META                    */
-/* ========================= */
+/* ============================= */
+/*   META                       */
+/* ============================= */
 
 .meta{
   width: 100%;
@@ -159,6 +142,10 @@ body::before{
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+/* ============================= */
+/*   FOOTER                     */
+/* ============================= */
 
 .signature{
   margin-top: clamp(70px, 10vw, 120px);
