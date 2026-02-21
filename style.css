@@ -1,84 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Epunda+Slab:wght@300..900&display=swap');
+
 :root{
-  --bg: #2f2f2f;                 /* detuned grey */
-  --ink: rgba(236,236,236,0.92);
-  --muted: rgba(236,236,236,0.78);
-  --sep: rgba(236,236,236,0.48);
+  --bg: #181818;                         /* properly dark */
+  --title: #f2f2f2;                      /* near white */
+  --text: rgba(242,242,242,0.9);
+  --muted: rgba(242,242,242,0.75);
+  --sep: rgba(242,242,242,0.45);
 
   --maxw: 980px;
-  --gutter: clamp(18px, 5vw, 56px);
-
-  --radius: 12px;
+  --gutter: clamp(20px, 5vw, 60px);
+  --radius: 14px;
 }
 
 *{ box-sizing: border-box; }
 
 html, body{ height: 100%; }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='3' height='3'%3E%3Crect width='1' height='1' fill='%23cfcfcf'/%3E%3Crect x='1' width='1' height='1' fill='%238a8a8a'/%3E%3Crect x='2' width='1' height='1' fill='%23bdbdbd'/%3E%3Crect y='1' width='1' height='1' fill='%239c9c9c'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23e6e6e6'/%3E%3Crect x='2' y='1' width='1' height='1' fill='%23757575'/%3E%3Crect y='2' width='1' height='1' fill='%23b3b3b3'/%3E%3Crect x='1' y='2' width='1' height='1' fill='%23808080'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23d4d4d4'/%3E%3C/svg%3E");
-
-  background-size: 4px 4px;
-  opacity: 0.35;
-  z-index: 0;
-}
-
-/* continuous analog detuning */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' seed='7'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='gamma' exponent='1.8'/%3E%3CfeFuncG type='gamma' exponent='1.8'/%3E%3CfeFuncB type='gamma' exponent='1.8'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-
-  background-size: cover;
-  opacity: 0.35;
-  mix-blend-mode: screen;
-  z-index: 0;
-}
-
-.masthead{
+body{
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Epunda Slab", serif;
   position: relative;
-  z-index: 1;
+}
+
+/* --- TRUE CRT-STYLE SNOW --- */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+
+  /* high-contrast light + dark specks */
+  background-image: url("data:image/svg+xml,\
+  %3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E\
+  %3Crect width='1' height='1' fill='%23f5f5f5'/%3E\
+  %3Crect x='1' width='1' height='1' fill='%230a0a0a'/%3E\
+  %3Crect x='2' width='1' height='1' fill='%23e0e0e0'/%3E\
+  %3Crect x='3' width='1' height='1' fill='%23121212'/%3E\
+  %3Crect y='1' width='1' height='1' fill='%23101010'/%3E\
+  %3Crect x='1' y='1' width='1' height='1' fill='%23ededed'/%3E\
+  %3Crect x='2' y='1' width='1' height='1' fill='%23181818'/%3E\
+  %3Crect x='3' y='1' width='1' height='1' fill='%23dcdcdc'/%3E\
+  %3Crect y='2' width='1' height='1' fill='%23e6e6e6'/%3E\
+  %3Crect x='1' y='2' width='1' height='1' fill='%23141414'/%3E\
+  %3Crect x='2' y='2' width='1' height='1' fill='%23fafafa'/%3E\
+  %3Crect x='3' y='2' width='1' height='1' fill='%230c0c0c'/%3E\
+  %3Crect y='3' width='1' height='1' fill='%23161616'/%3E\
+  %3Crect x='1' y='3' width='1' height='1' fill='%23e8e8e8'/%3E\
+  %3Crect x='2' y='3' width='1' height='1' fill='%230f0f0f'/%3E\
+  %3Crect x='3' y='3' width='1' height='1' fill='%23f0f0f0'/%3E\
+  %3C/svg%3E");
+
+  background-size: 6px 6px;  /* ← increase for bigger pixels (8px for chunkier) */
+  opacity: 0.18;             /* increase to 0.22 for stronger snow */
+  z-index: -1;
+}
+
+/* --- TITLE --- */
+.masthead{
   width: min(var(--maxw), calc(100% - (2 * var(--gutter))));
   margin: 0 auto;
-  padding: clamp(48px, 8vw, 86px) 0 clamp(26px, 4vw, 40px);
+  padding: clamp(60px, 9vw, 100px) 0 clamp(40px, 6vw, 60px);
 }
 
 .masthead h1{
   margin: 0;
   text-align: center;
   font-weight: 900;
-  font-size: clamp(56px, 9vw, 96px);
-  letter-spacing: -0.6px;
-  color: rgba(240,240,240,0.95);
+  font-size: clamp(60px, 9vw, 110px);
+  letter-spacing: -0.5px;
+  color: var(--title);
 }
 
+/* --- MAIN CONTAINER --- */
 .container{
-  position: relative;
-  z-index: 1;
   width: min(var(--maxw), calc(100% - (2 * var(--gutter))));
   margin: 0 auto;
-  padding: 0 0 clamp(44px, 7vw, 84px);
+  padding-bottom: clamp(60px, 8vw, 100px);
 }
 
+/* --- LIST --- */
 .list{
   display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(42px, 7vw, 74px);
+  gap: clamp(60px, 9vw, 100px);
 }
 
 .entry{
   display: grid;
   justify-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
+/* --- THUMBNAILS --- */
 .thumb{
   display: block;
   width: 100%;
@@ -89,26 +103,24 @@ body::before {
 }
 
 .thumb img{
-  display: block;
   width: 100%;
   height: auto;
   border-radius: var(--radius);
+  display: block;
 }
 
 .thumb:hover img{
-  filter: brightness(1.06);
+  filter: brightness(1.08);
 }
 
+/* --- META --- */
 .meta{
-  display: block;
   width: 100%;
   max-width: 920px;
+  font-size: clamp(18px, 2.2vw, 20px);
+  line-height: 1.3;
   color: var(--muted);
   text-decoration: none;
-  font-size: clamp(16px, 2.1vw, 19px);
-  line-height: 1.25;
-  text-align: left;
-  padding-left: 2px;
 }
 
 .meta:hover{
@@ -116,20 +128,16 @@ body::before {
   text-underline-offset: 4px;
 }
 
-.name{ color: var(--ink); }
-.year{ color: var(--ink); }
-.sep{ color: var(--sep); }
-
 .signature{
-  margin-top: clamp(54px, 9vw, 96px);
+  margin-top: clamp(70px, 10vw, 120px);
   text-align: center;
 }
 
 .signature a{
-  color: rgba(236,236,236,0.62);
+  color: rgba(242,242,242,0.6);
   text-decoration: none;
 }
+
 .signature a:hover{
   text-decoration: underline;
-  text-underline-offset: 4px;
 }
