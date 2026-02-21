@@ -5,15 +5,16 @@
 
   --title: #f2f2f2;
   --text: rgba(242,242,242,0.90);
-  --muted: rgba(242,242,242,0.75);
+  --muted: rgba(242,242,242,0.78);
 
   --maxw: 980px;
   --gutter: clamp(20px, 5vw, 60px);
   --radius: 14px;
 
   /* Tuning knobs */
-  --snow-opacity: 0.28;   /* try 0.34 for stronger snow */
-  --scan-opacity: 0.18;   /* reduce to 0.10 if too strong */
+  --snow-opacity: 0.20;   /* try 0.18–0.26 */
+  --scan-opacity: 0.08;   /* try 0.05–0.12 */
+  --grain-size: 128px;    /* smaller = finer grain (96px), larger = coarser (192px) */
 }
 
 *{ box-sizing: border-box; }
@@ -27,44 +28,62 @@ body{
   position: relative;
 }
 
-/* ============================= */
-/*   REAL CRT SNOW (BITMAP)     */
-/* ============================= */
+/* --------- Field unevenness (breaks “stone wallpaper”) --------- */
+html::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
 
+  /* very soft vignette + slight off-center darkening */
+  background:
+    radial-gradient(ellipse at 30% 35%,
+      rgba(0,0,0,0.22) 0%,
+      rgba(0,0,0,0.10) 38%,
+      rgba(0,0,0,0.00) 68%),
+    radial-gradient(ellipse at 70% 80%,
+      rgba(0,0,0,0.18) 0%,
+      rgba(0,0,0,0.00) 60%),
+    radial-gradient(ellipse at center,
+      rgba(0,0,0,0.00) 55%,
+      rgba(0,0,0,0.22) 100%);
+}
+
+/* --------- Snow (bitmap noise) --------- */
 body::before{
   content:"";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: url("noise.png") repeat;
-  background-size: 256px 256px;
-  opacity: var(--snow-opacity);
   z-index: 0;
+
+  background: url("./noise.png") repeat;
+  background-size: var(--grain-size) var(--grain-size);
+  opacity: var(--snow-opacity);
 }
 
-/* Optional scanlines layer */
+/* --------- Scanlines (subtle) --------- */
 body::after{
   content:"";
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: url("scanlines.png") repeat;
+  z-index: 2;
+
+  background: url("./scanlines.png") repeat;
   background-size: 8px 4px;
   opacity: var(--scan-opacity);
-  z-index: 0;
 }
 
-/* Ensure content sits above noise */
+/* Ensure content sits above everything */
 .masthead,
 .container{
   position: relative;
-  z-index: 1;
+  z-index: 3;
 }
 
-/* ============================= */
-/*   TITLE                      */
-/* ============================= */
-
+/* --------- Title --------- */
 .masthead{
   width: min(var(--maxw), calc(100% - (2 * var(--gutter))));
   margin: 0 auto;
@@ -80,10 +99,7 @@ body::after{
   color: var(--title);
 }
 
-/* ============================= */
-/*   CONTENT                    */
-/* ============================= */
-
+/* --------- Content --------- */
 .container{
   width: min(var(--maxw), calc(100% - (2 * var(--gutter))));
   margin: 0 auto;
@@ -101,10 +117,7 @@ body::after{
   gap: 16px;
 }
 
-/* ============================= */
-/*   THUMBNAILS                 */
-/* ============================= */
-
+/* --------- Thumbnails --------- */
 .thumb{
   display: block;
   width: 100%;
@@ -125,10 +138,7 @@ body::after{
   filter: brightness(1.08);
 }
 
-/* ============================= */
-/*   META                       */
-/* ============================= */
-
+/* --------- Meta --------- */
 .meta{
   width: 100%;
   max-width: 920px;
@@ -143,17 +153,14 @@ body::after{
   text-underline-offset: 4px;
 }
 
-/* ============================= */
-/*   FOOTER                     */
-/* ============================= */
-
+/* --------- Footer --------- */
 .signature{
   margin-top: clamp(70px, 10vw, 120px);
   text-align: center;
 }
 
 .signature a{
-  color: rgba(242,242,242,0.6);
+  color: rgba(242,242,242,0.62);
   text-decoration: none;
 }
 
