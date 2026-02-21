@@ -2,17 +2,13 @@
 
 :root{
   --bg: #181818;
-
   --title: #f2f2f2;
-  --text: rgba(242,242,242,0.90);
+  --text: rgba(242,242,242,0.9);
   --muted: rgba(242,242,242,0.75);
+
   --maxw: 980px;
   --gutter: clamp(20px, 5vw, 60px);
   --radius: 14px;
-
-  /* --- CRT snow tuning --- */
-  --snow-size: 6px;     /* make bigger: 8px / 10px | make finer: 4px */
-  --snow-opacity: 0.18; /* stronger: 0.22 | weaker: 0.14 */
 }
 
 *{ box-sizing: border-box; }
@@ -23,31 +19,69 @@ body{
   background: var(--bg);
   color: var(--text);
   font-family: "Epunda Slab", serif;
+  position: relative;
 }
 
-/* --- layer stack: snow (0), content (1) --- */
+/* ========================= */
+/*   CRT-STYLE STATIC        */
+/* ========================= */
+
 body::before{
-  content:"";
+  content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
+  z-index: 0;
 
-  /* high-contrast light + dark specks */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='1' height='1' fill='%23f5f5f5'/%3E%3Crect x='1' width='1' height='1' fill='%230a0a0a'/%3E%3Crect x='2' width='1' height='1' fill='%23e0e0e0'/%3E%3Crect x='3' width='1' height='1' fill='%23121212'/%3E%3Crect y='1' width='1' height='1' fill='%23101010'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23ededed'/%3E%3Crect x='2' y='1' width='1' height='1' fill='%23181818'/%3E%3Crect x='3' y='1' width='1' height='1' fill='%23dcdcdc'/%3E%3Crect y='2' width='1' height='1' fill='%23e6e6e6'/%3E%3Crect x='1' y='2' width='1' height='1' fill='%23141414'/%3E%3Crect x='2' y='2' width='1' height='1' fill='%23fafafa'/%3E%3Crect x='3' y='2' width='1' height='1' fill='%230c0c0c'/%3E%3Crect y='3' width='1' height='1' fill='%23161616'/%3E%3Crect x='1' y='3' width='1' height='1' fill='%23e8e8e8'/%3E%3Crect x='2' y='3' width='1' height='1' fill='%230f0f0f'/%3E%3Crect x='3' y='3' width='1' height='1' fill='%23f0f0f0'/%3E%3C/svg%3E");
+  /* multiple fine grain layers */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.12) 0px,
+      rgba(255,255,255,0.12) 1px,
+      rgba(0,0,0,0.12) 1px,
+      rgba(0,0,0,0.12) 2px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255,255,255,0.08) 0px,
+      rgba(255,255,255,0.08) 1px,
+      rgba(0,0,0,0.08) 1px,
+      rgba(0,0,0,0.08) 3px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.06) 0px,
+      rgba(255,255,255,0.06) 1px,
+      rgba(0,0,0,0.06) 1px,
+      rgba(0,0,0,0.06) 4px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255,255,255,0.06) 0px,
+      rgba(255,255,255,0.06) 1px,
+      rgba(0,0,0,0.06) 1px,
+      rgba(0,0,0,0.06) 4px
+    );
 
-  background-size: var(--snow-size) var(--snow-size);
-  opacity: var(--snow-opacity);
-  z-index: 0; /* IMPORTANT: not negative */
+  /* THIS controls pixel size */
+  background-size: 2px 2px, 3px 3px, 5px 5px, 5px 5px;
+  background-position: 0 0, 1px 2px, 2px 1px, 3px 4px;
+
+  opacity: 0.35; /* increase to 0.45 for stronger snow */
 }
 
-/* ensure content is above snow */
+/* Ensure content sits above static */
 .masthead,
 .container{
   position: relative;
   z-index: 1;
 }
 
-/* --- title --- */
+/* ========================= */
+/*   TITLE                   */
+/* ========================= */
+
 .masthead{
   width: min(var(--maxw), calc(100% - (2 * var(--gutter))));
   margin: 0 auto;
@@ -63,7 +97,10 @@ body::before{
   color: var(--title);
 }
 
-/* --- content --- */
+/* ========================= */
+/*   CONTENT                 */
+/* ========================= */
+
 .container{
   width: min(var(--maxw), calc(100% - (2 * var(--gutter))));
   margin: 0 auto;
@@ -80,6 +117,10 @@ body::before{
   justify-items: center;
   gap: 16px;
 }
+
+/* ========================= */
+/*   THUMBNAILS              */
+/* ========================= */
 
 .thumb{
   display: block;
@@ -100,6 +141,10 @@ body::before{
 .thumb:hover img{
   filter: brightness(1.08);
 }
+
+/* ========================= */
+/*   META                    */
+/* ========================= */
 
 .meta{
   width: 100%;
